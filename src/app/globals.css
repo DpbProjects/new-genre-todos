@@ -15,20 +15,20 @@ body {
 @layer base {
   :root {
     /* PRODUCT */
-    --product-purple: #8284fa;
-    --product-purple-dark: #5e60ce;
-    --product-blue: #4ea8de;
-    --product-blur-dark: #1e6f9f;
+    --product-purple: 240 90.4% 72%;
+    --product-purple-dark: 238 53.2% 59%;
+    --product-blue: 202 71.9% 59.8%;
+    --product-blue-dark: 203 68.2% 37.8%;
 
     /* BASE */
-    --base-gray-700: #0d0d0d;
-    --base-gray-600: #1a1a1a;
-    --base-gray-500: #262626;
-    --base-gray-400: #333333;
-    --base-gray-300: #808080;
-    --base-gray-200: #d9d9d9;
-    --base-gray-100: #f2f2f2;
-    --base-danger: #e25858;
+    --base-gray-700: 0 0% 5.1%;
+    --base-gray-600: 0 0% 10.2%;
+    --base-gray-500: 0 0% 15.1%;
+    --base-gray-400: 0 0% 20%;
+    --base-gray-300: 0 0% 50.4%;
+    --base-gray-200: 0 0% 85.1%;
+    --base-gray-100: 0 0% 95.1%;
+    --base-danger: 0 68.3% 62.7%;
 
     /* --shad-example: var(var(--product-red)) */
 
@@ -67,5 +67,6 @@ body {
   }
   body {
     @apply bg-base-gray-600 text-foreground;
+    height: 100vh;
   }
 }
