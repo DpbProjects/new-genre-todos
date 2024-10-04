@@ -18,7 +18,7 @@ const TodoItem = ({ todo, toggleComplete, deleteTodo }: TodoItemProps) => {
     >
       <div className="flex items-center self-start mr-3 min-h-6">
         <Checkbox
-          className="rounded-full border-product-blue hover:border-product-blur-dark data-[state=checked]:hover:border-none data-[state=checked]:bg-product-purple-dark data-[state=checked]:hover:bg-product-purple data-[state=checked]:text-base-gray-100"
+          className="rounded-full border-product-blue hover:border-product-blue-dark hover:bg-product-blue-dark/15 data-[state=checked]:border-none data-[state=checked]:hover:border-none  data-[state=checked]:bg-product-purple-dark data-[state=checked]:hover:bg-product-purple data-[state=checked]:text-base-gray-100"
           checked={todo.isComplete}
           onClick={() => toggleComplete(todo.id)}
         />
