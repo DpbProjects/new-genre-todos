@@ -17,7 +17,9 @@ const TodoSummary = ({ todos, completedTodosCount }: TodoSummaryProps) => {
       <div className="text-product-purple font-bold text-sm">
         Completed
         <span className="ml-1 px-2 font-bold bg-base-gray-400 rounded-xl text-gray-50">
-          {`${completedTodosCount} of ${todos.length}`}
+          {completedTodosCount > 0
+            ? `${completedTodosCount} of ${todos.length}`
+            : `${completedTodosCount}`}
         </span>
       </div>
     </div>
