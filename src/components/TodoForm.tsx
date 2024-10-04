@@ -8,11 +8,11 @@ interface TodoFormProps {
   addTodo: () => void;
 }
 
-export default function TodoForm({
+const TodoForm = ({
   todoContent,
   setTodoContent,
   addTodo,
-}: TodoFormProps) {
+}: TodoFormProps) => {
   return (
     <div className="flex items-center min-w-full mb-16">
       <Input
@@ -29,3 +29,5 @@ export default function TodoForm({
     </div>
   );
 }
+
+export default TodoForm;
