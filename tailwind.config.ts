@@ -10,19 +10,18 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        "product-purple": "#8284fa",
-        "product-purple-dark": "#5e60ce",
-        "product-blue": "#4ea8de",
-        "product-blur-dark": "#1e6f9f",
-
-        "base-gray-700": "#0d0d0d",
-        "base-gray-600": "#1a1a1a",
-        "base-gray-500": "#262626",
-        "base-gray-400": "#333333",
-        "base-gray-300": "#808080",
-        "base-gray-200": "#d9d9d9",
-        "base-gray-100": "#f2f2f2",
-        "base-danger": "#e25858",
+        "product-purple": "hsl(var(--product-purple))",
+        "product-purple-dark": "hsl(var(--product-purple-dark))",
+        "product-blue": "hsl(var(--product-blue))",
+        "product-blue-dark": "hsl(var(--product-blue-dark))",
+        "base-gray-700": "hsl(var(--base-gray-700))",
+        "base-gray-600": "hsl(var(--base-gray-600))",
+        "base-gray-500": "hsl(var(--base-gray-500))",
+        "base-gray-400": "hsl(var(--base-gray-400))",
+        "base-gray-300": "hsl(var(--base-gray-300))",
+        "base-gray-200": "hsl(var(--base-gray-200))",
+        "base-gray-100": "hsl(var(--base-gray-100))",
+        "base-danger": "hsl(var(--base-danger))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -71,6 +70,7 @@ const config: Config = {
       },
     },
   },
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   plugins: [require("tailwindcss-animate")],
 };
 export default config;
