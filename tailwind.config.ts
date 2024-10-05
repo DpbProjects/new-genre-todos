@@ -10,6 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Custom colors
         "product-purple": "hsl(var(--product-purple))",
         "product-purple-dark": "hsl(var(--product-purple-dark))",
         "product-blue": "hsl(var(--product-blue))",
@@ -22,6 +23,7 @@ const config: Config = {
         "base-gray-200": "hsl(var(--base-gray-200))",
         "base-gray-100": "hsl(var(--base-gray-100))",
         "base-danger": "hsl(var(--base-danger))",
+        // Shadcn colors
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -67,6 +69,21 @@ const config: Config = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      // fade-in
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        fadeOut: {
+          "0%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
+      },
+      animation: {
+        fadeIn: "fadeIn 0.5s ease-in-out", // 0.5s fade-in
+        fadeOut: "fadeOut 0.5s ease-in-out",
       },
     },
   },
