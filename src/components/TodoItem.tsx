@@ -1,3 +1,5 @@
+import { useFade } from "@/lib/hooks/useFade";
+
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -11,10 +13,13 @@ interface TodoItemProps {
 }
 
 const TodoItem = ({ todo, toggleComplete, deleteTodo }: TodoItemProps) => {
+  const { isVisible, fadeOut } = useFade();
+
   return (
     <div
-      key={todo.id}
-      className={`flex border bg-base-gray-500 border-base-gray-400 items-center justify-between p-4 mb-3 rounded`}
+      className={`flex border bg-base-gray-500 border-base-gray-400 items-center justify-between p-4 mb-3 rounded transition-opacity duration-500 ${
+        isVisible ? "opacity-100" : "opacity-0"
+      }`}
     >
       <div className="flex items-center self-start mr-3 min-h-6">
         <Checkbox
@@ -38,7 +43,10 @@ const TodoItem = ({ todo, toggleComplete, deleteTodo }: TodoItemProps) => {
         variant="ghost"
         className="self-start"
         size="icon"
-        onClick={() => deleteTodo(todo.id)}
+        onClick={() => {
+          fadeOut();
+          setTimeout(() => deleteTodo(todo.id), 500); // Wait for fade-out duration
+        }}
       >
         <Trash2
           size={16}
