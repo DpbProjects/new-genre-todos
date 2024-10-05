@@ -67,6 +67,6 @@ body {
   }
   body {
     @apply bg-base-gray-600 text-foreground;
-    height: 100vh;
+    /* height: 100vh; */
   }
 }
