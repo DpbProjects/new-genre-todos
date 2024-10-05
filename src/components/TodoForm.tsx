@@ -14,7 +14,7 @@ const TodoForm = ({
   addTodo,
 }: TodoFormProps) => {
   return (
-    <div className="flex items-center min-w-full mb-16">
+    <div className="flex items-center  mb-16">
       <Input
         className="border-0 h-[52px] p-4 mr-2 bg-base-gray-500 text-base-gray-100"
         type="text"
