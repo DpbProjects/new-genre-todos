@@ -1,4 +1,5 @@
 import TodoItem from "./TodoItem";
+import ClipboardIcon from "./icons/ClipboardIcon";
 
 import type { Todo } from "@/lib/types";
 
@@ -21,8 +22,14 @@ const TodoList = ({ todos, toggleComplete, deleteTodo }: TodoListProps) => {
           />
         ))
       ) : (
-        <div className="border-t-[1px] border-base-gray-400">
-          <p className="p-4 text-center text-base-gray-400">No tasks found.</p>
+        <div className="flex flex-col justify-center items-center border-t-[1px] border-base-gray-300 text-base-gray-300 text-base animate-fadeIn">
+          <ClipboardIcon className="mb-4 mt-16"/>
+          <p className="font-bold text-center">
+            Você ainda não tem tarefas cadastradas
+          </p>
+          <p className="text-center">
+            Crie tarefas e organize seus itens a fazer
+          </p>
         </div>
       )}
     </div>
