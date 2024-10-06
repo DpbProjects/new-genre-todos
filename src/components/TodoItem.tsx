@@ -8,12 +8,15 @@ import type { Todo } from "@/lib/types";
 
 interface TodoItemProps {
   todo: Todo;
-  toggleComplete: (id: string) => void;
-  deleteTodo: (id: string) => void;
+  toggleComplete: (id: string, isComplete: boolean) => Promise<void>;
+  deleteTodo: (id: string) => Promise<void>;
 }
 
 const TodoItem = ({ todo, toggleComplete, deleteTodo }: TodoItemProps) => {
   const { isVisible, fadeOut } = useFade();
+
+  // convert todo id to string
+  const todoId = todo.id.toString();
 
   return (
     <div
@@ -24,14 +27,14 @@ const TodoItem = ({ todo, toggleComplete, deleteTodo }: TodoItemProps) => {
       <div className="flex items-center self-start mr-3 min-h-6">
         <Checkbox
           className="rounded-full border-product-blue hover:border-product-blue-dark hover:bg-product-blue-dark/15 data-[state=checked]:border-none data-[state=checked]:hover:border-none  data-[state=checked]:bg-product-purple-dark data-[state=checked]:hover:bg-product-purple data-[state=checked]:text-base-gray-100"
-          checked={todo.isComplete}
-          onClick={() => toggleComplete(todo.id)}
+          checked={todo.is_complete}
+          onClick={() => toggleComplete(todoId, todo.is_complete)}
         />
       </div>
 
       <span
         className={`flex-grow ${
-          todo.isComplete
+          todo.is_complete
             ? "line-through text-base-gray-300"
             : "text-base-gray-100"
         }`}
@@ -45,7 +48,7 @@ const TodoItem = ({ todo, toggleComplete, deleteTodo }: TodoItemProps) => {
         size="icon"
         onClick={() => {
           fadeOut();
-          setTimeout(() => deleteTodo(todo.id), 500); // Wait for fade-out duration
+          setTimeout(() => deleteTodo(todoId), 500); // Wait for fade-out duration
         }}
       >
         <Trash2

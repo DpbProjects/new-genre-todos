@@ -1,5 +1,8 @@
 export interface Todo {
-  id: string;
+  id: number;
   content: string;
-  isComplete: boolean;
+  is_complete: boolean;
+  user_id: string;
+  created_at: string;
+  updated_at: string;
 }

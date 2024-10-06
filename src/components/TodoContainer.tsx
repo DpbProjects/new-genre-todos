@@ -1,85 +1,127 @@
 "use client";
 
-import { useState, useEffect } from "react";
-
-import { uuid } from "uuidv4";
+import { useTodos } from "@/lib/hooks/useTodos";
 
 import TodoForm from "@/components/TodoForm";
 import TodoSummary from "@/components/TodoSummary";
 import TodoList from "@/components/TodoList";
-
-import type { Todo } from "@/lib/types";
+import Spinner from "./icons/Spinner";
 
 const TodoContainer = () => {
-  const [todoContent, setTodoContent] = useState("");
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [isClient, setIsClient] = useState(false);
+  const { todos, isLoading, mutate } = useTodos();
 
-  // Check if the component is mounted on the client
-  useEffect(() => {
-    setIsClient(true);
-    if (typeof window !== "undefined") {
-      const savedTodos = localStorage.getItem("todos");
-      if (savedTodos) {
-        setTodos(JSON.parse(savedTodos));
+  const addTodo = async (newTodoContent: string) => {
+    await fetch("/api/todos", {
+      method: "POST",
+      body: JSON.stringify({ content: newTodoContent }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    mutate();
+  };
+
+  const toggleComplete = async (id: string, isComplete: boolean) => {
+    const previousTodos = todos; // Capture the previous state
+    try {
+      // Optimistically update the todos in the local cache
+      mutate(
+        (todos) =>
+          todos
+            ?.map((todo) =>
+              todo?.id.toString() === id
+                ? { ...todo, is_complete: !todo.is_complete }
+                : todo,
+            )
+            .sort((a, b) => {
+              return (
+                new Date(a.created_at).getTime() -
+                new Date(b.created_at).getTime()
+              );
+            }),
+        false,
+      );
+
+      // Send PATCH request to the API to update the todo's completion status
+      const response = await fetch(`/api/todos/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ is_complete: !isComplete }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to toggle todo completion");
       }
+
+      // Optionally, revalidate the data
+      mutate();
+    } catch (error) {
+      console.error("Error toggling todo completion:", error);
+
+      // Revert to previous state on error
+      mutate(previousTodos, false);
     }
-  }, []);
+  };
 
-  // Save todos to localStorage when the todos state changes
-  useEffect(() => {
-    if (isClient) {
-      localStorage.setItem("todos", JSON.stringify(todos));
+  const deleteTodo = async (id: string) => {
+    try {
+      // Optimistically update the local cache by removing the todo
+      mutate(
+        (todos) => todos?.filter((todo) => todo?.id.toString() !== id),
+        false, // Disable revalidation
+      );
+
+      // Send DELETE request to the API to delete the todo
+      const response = await fetch(`/api/todos/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete todo");
+      }
+
+      // Optionally, revalidate the data by calling mutate() again
+      mutate();
+    } catch (error) {
+      console.error("Error deleting todo:", error);
+      // Revert the optimistic update in case of an error
+      mutate();
     }
-  }, [todos, isClient]);
-
-  const addTodo = () => {
-    if (todoContent.trim() === "") return;
-
-    const newTodo: Todo = {
-      id: uuid(),
-      content: todoContent,
-      isComplete: false,
-    };
-
-    setTodos([...todos, newTodo]);
-    setTodoContent("");
   };
 
-  const toggleComplete = (id: string) => {
-    const updatedTodos = todos.map((todo) =>
-      todo.id === id ? { ...todo, isComplete: !todo.isComplete } : todo,
-    );
-    setTodos(updatedTodos);
-  };
-
-  const deleteTodo = (id: string) => {
-    const updatedTodos = todos.filter((todo) => todo.id !== id);
-    setTodos(updatedTodos);
-  };
-
-  const completedTodosCount = todos.filter(
-    (todo) => todo.isComplete === true,
+  const completedTodosCount = todos?.filter(
+    (todo) => todo.is_complete === true,
   ).length;
 
-  // Only render once the component is on the client side
-  if (!isClient) return null;
-
   return (
-    <div className="container mx-auto max-w-[736px] relative">
-      <div className=" absolute top-[-1.6rem] w-full">
-        <TodoForm
-          todoContent={todoContent}
-          setTodoContent={setTodoContent}
-          addTodo={addTodo}
-        />
-        <TodoSummary todos={todos} completedTodosCount={completedTodosCount} />
-        <TodoList
-          todos={todos}
-          toggleComplete={toggleComplete}
-          deleteTodo={deleteTodo}
-        />
-      </div>
+    <div className="relative flex justify-center items-center md:mx-auto max-w-[736px] w-full">
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <div className="absolute top-[-1.6rem] sm:w-full">
+          <TodoForm addTodo={addTodo} />
+
+          <TodoSummary
+            todos={todos}
+            completedTodosCount={completedTodosCount && completedTodosCount}
+          />
+          <TodoList
+            todos={todos?.sort((a, b) => {
+              // Convert created_at to a number (timestamp) for comparison
+              return (
+                new Date(a.created_at).getTime() -
+                new Date(b.created_at).getTime()
+              );
+            })}
+            toggleComplete={toggleComplete}
+            deleteTodo={deleteTodo}
+          />
+        </div>
+      )}
     </div>
   );
 };

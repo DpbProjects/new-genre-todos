@@ -1,8 +1,8 @@
 import type { Todo } from "@/lib/types";
 
 interface TodoSummaryProps {
-  todos: Todo[];
-  completedTodosCount: number;
+  todos: Todo[] | undefined;
+  completedTodosCount: number | undefined;
 }
 
 const TodoSummary = ({ todos, completedTodosCount }: TodoSummaryProps) => {
@@ -11,14 +11,14 @@ const TodoSummary = ({ todos, completedTodosCount }: TodoSummaryProps) => {
       <div className="text-product-blue font-bold text-sm">
         Tasks created
         <span className="ml-1 px-2 font-bold bg-base-gray-400 rounded-xl text-gray-50">
-          {todos.length}
+          {todos?.length}
         </span>
       </div>
       <div className="text-product-purple font-bold text-sm">
         Completed
         <span className="ml-1 px-2 font-bold bg-base-gray-400 rounded-xl text-gray-50">
-          {completedTodosCount > 0
-            ? `${completedTodosCount} of ${todos.length}`
+          {completedTodosCount && completedTodosCount > 0
+            ? `${completedTodosCount} of ${todos?.length}`
             : `${completedTodosCount}`}
         </span>
       </div>
