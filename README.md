@@ -23,7 +23,7 @@ Install the necessary dependencies by running the following commands:
 
 ```bash
 cd todo-app
-npm install
+pnpm install
 ```
 
 ### Step 3: Set Up Environment Variables
@@ -35,7 +35,7 @@ Set up environment variables by creating a `.env` file in the root of your proje
 Start the development server using the following command:
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 ## Usage
@@ -50,6 +50,9 @@ npm run dev
 - SWR
 - Neon PostgreSQL
 - Drizzle ORM
+
+## Future Developments
+- Create a custom sign up and login page using [shadcn ui](https://ui.shadcn.com/) components.
 
 ## Contributing
 
